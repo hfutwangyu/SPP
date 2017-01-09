@@ -14,7 +14,7 @@ ui(new Ui::MainWindowClass)
 {
 	ui->setupUi(this);
 
-	setWindowTitle("SPP UI");
+	setWindowTitle("SPP UI");//ΩÁ√Ê√˚≥∆
 	setWindowIcon(QIcon("Icons/MeshDenoise.ico"));
 
 	setGeometry(250, 50, 880, 660);
