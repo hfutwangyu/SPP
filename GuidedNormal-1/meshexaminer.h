@@ -3,7 +3,7 @@
 
 #include "glexaminer.h"
 #include "mesh.h"
-
+#include "slice.h"
 class MeshExaminer : public GLExaminer
 {
 public:

@@ -41,7 +41,7 @@ void MeshExaminer::draw()
 {
 	if (draw_points_status_)
 	{
-		glBegin(GL_POINTS);
+	/*	glBegin(GL_POINTS);
 		for (TriMesh::VertexIter v_it = mesh_show_.vertices_begin();
 			v_it != mesh_show_.vertices_end(); v_it++)
 		{
@@ -52,6 +52,27 @@ void MeshExaminer::draw()
 			glVertex3f(point[0], point[1], point[2]);
 		}
 		glEnd();
+	*/
+		Slice slice_mesh_show_;
+		slice_mesh_show_.SliceTheModel(mesh_show_);
+		for (auto slicing_iterator = slice_mesh_show_.slicing.begin(); slicing_iterator != slice_mesh_show_.slicing.end(); slicing_iterator++)
+		{
+			Contours z_contours = *slicing_iterator;
+			for (auto contours_iterator = z_contours.begin(); contours_iterator != z_contours.end(); contours_iterator++)
+			{
+				Polylines z_polyline = *contours_iterator;
+				glPointSize(3.5f);
+				glBegin(GL_POINTS);
+				for (auto polyline_iterator = z_polyline.begin(); polyline_iterator != z_polyline.end(); polyline_iterator++)
+				{
+					TriMesh::Point p = *polyline_iterator;
+
+					glColor3f(1.0f, 0.0f, 1.0f);
+					glVertex3f(p[0], p[1], p[2]);
+				}
+				glEnd();
+			}
+		}
 	}
 
 	if (draw_faces_status_)
@@ -74,7 +95,6 @@ void MeshExaminer::draw()
 		}
 		glEnd();
 	}
-
 	if (draw_edges_status_)
 	{
 		for (TriMesh::FaceIter f_it = mesh_show_.faces_begin();
@@ -93,8 +113,28 @@ void MeshExaminer::draw()
 			}
 			glEnd();
 		}
-	}
+	
+		Slice slice_mesh_show_;
+		slice_mesh_show_.SliceTheModel(mesh_show_);
+		for (auto slicing_iterator = slice_mesh_show_.slicing.begin(); slicing_iterator != slice_mesh_show_.slicing.end(); slicing_iterator++)
+		{
+			Contours z_contours = *slicing_iterator;
+			for (auto contours_iterator = z_contours.begin(); contours_iterator != z_contours.end(); contours_iterator++)
+			{
+				Polylines z_polyline = *contours_iterator;
+				glLineWidth(2);
+				glBegin(GL_LINE_LOOP);
+				for (auto polyline_iterator = z_polyline.begin(); polyline_iterator != z_polyline.end(); polyline_iterator++)
+				{
+					TriMesh::Point p = *polyline_iterator;
 
+					glColor3f(0.3f, 0.3f, 0.3f);
+					glVertex3f(p[0], p[1], p[2]);
+				}
+				glEnd();
+			}
+		}
+	}
 }
 
 bool MeshExaminer::meshBoundingBox(TriMesh::Point &min_coord, TriMesh::Point &max_coord)
